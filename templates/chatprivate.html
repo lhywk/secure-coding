@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ receiver.username }}님과의 1:1 채팅{% endblock %}
+{% block content %}
+<h2>{{ receiver.username }}님과의 1:1 채팅</h2>
+
+{% if receiver and receiver.id %}
+  <p><a href="{{ url_for('report', target_id=receiver.id) }}">신고하기</a></p>
+{% else %}
+  <p style="color: red;">신고 대상 정보가 없습니다.</p>
+{% endif %}
+
+<div id="messages" style="height: 300px; border: 1px solid #ccc; padding: 10px; overflow-y: scroll;"></div>
+<input id="message_input" placeholder="메시지를 입력하세요">
+<button onclick="sendMessage()">전송</button>
+
+<script>
+  const socket = io();
+  const roomId = "{{ room_id }}";
+
+  socket.on("connect", () => {
+    socket.emit("join", { room: roomId });
+  });
+
+  socket.on("private_message", (data) => {
+    const div = document.getElementById("messages");
+    const msg = document.createElement("div");
+    msg.textContent = data.message;
+    div.appendChild(msg);
+    div.scrollTop = div.scrollHeight;
+  });
+
+  function sendMessage() {
+    const input = document.getElementById("message_input");
+    const message = input.value.trim();
+    if (message !== "") {
+      socket.emit("private_message", {
+        message: message,
+        room: roomId
+      });
+      input.value = "";
+    }
+  }
+</script>
+{% endblock %}
