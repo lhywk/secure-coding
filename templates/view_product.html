@@ -1,8 +1,18 @@
-{% extends "base.html" %}
-{% block title %}상품 상세보기{% endblock %}
-{% block content %}
-<h2>{{ product.title }}</h2>
-<p>{{ product.description }}</p>
-<p>가격: {{ product.price }}</p>
-<p>판매자: {{ seller.username if seller else '알 수 없음' }}</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.title }}</title>
+</head>
+<body>
+    <h1>{{ product.title }}</h1>
+    <p><strong>가격:</strong> {{ product.price }}원</p>
+    <p><strong>설명:</strong> {{ product.description }}</p>
+    <p><strong>판매자:</strong>
+        <a href="{{ url_for('view_user', user_id=seller.id) }}">{{ seller.username }}</a>
+    </p>
+
+    <a href="{{ url_for('chat', receiver_id=seller.id) }}">💬 채팅하기</a>
+    <a href="{{ url_for('dashboard') }}">← 상품 목록으로 돌아가기</a>
+</body>
+</html>
