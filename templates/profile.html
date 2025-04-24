@@ -1,11 +1,33 @@
-{% extends "base.html" %}
-{% block title %}프로필{% endblock %}
-{% block content %}
-<h2>프로필 관리</h2>
-<p>사용자명: {{ user.username }}</p>
-<form method="post">
-  소개글: <br>
-  <textarea name="bio" rows="4" cols="50">{{ user.bio or '' }}</textarea><br>
-  <button type="submit">프로필 업데이트</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 프로필</title>
+</head>
+<body>
+    <h1>내 프로필</h1>
+
+    <p><strong>아이디:</strong> {{ user.username }}</p>
+    <p><strong>보유 금액:</strong> {{ user.balance }}원</p>
+
+    {% if not user.is_active %}
+        <p style="color: red;">[휴면 상태입니다 - 로그인 불가]</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('profile') }}">
+        <label>소개글:</label><br>
+        <textarea name="bio" rows="3">{{ user.bio or '' }}</textarea><br><br>
+
+        <h3>비밀번호 변경</h3>
+        <label>현재 비밀번호:</label><br>
+        <input type="password" name="current_password"><br><br>
+
+        <label>새 비밀번호:</label><br>
+        <input type="password" name="new_password"><br><br>
+
+        <button type="submit">저장하기</button>
+    </form>
+
+    <p><a href="{{ url_for('dashboard') }}">← 대시보드로 돌아가기</a></p>
+</body>
+</html>
