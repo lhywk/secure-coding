@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}관리자 페이지{% endblock %}
+{% block content %}
+<h2>관리자 페이지</h2>
+
+<h3>전체 사용자 목록</h3>
+<ul>
+  {% for user in users %}
+    <li>
+      {{ user.username }} (ID: {{ user.id }}) -
+      {% if user.is_active %}활성{% else %}<span style="color:red;">휴면</span>{% endif %}
+      | 포인트: 
+      <form action="{{ url_for('update_balance', user_id=user.id) }}" method="POST" style="display: inline;">
+        <input type="number" name="new_balance" value="{{ user.balance }}" style="width: 80px;">
+        <button type="submit">수정</button>
+      </form>
+      {% if user.is_admin %}
+        | <strong style="color: green;">관리자</strong>
+        <a href="{{ url_for('toggle_admin', user_id=user.id) }}">[권한 해제]</a>
+      {% else %}
+        | 일반 사용자
+        <a href="{{ url_for('toggle_admin', user_id=user.id) }}">[관리자 부여]</a>
+      {% endif %}
+      | <a href="{{ url_for('delete_user', user_id=user.id) }}">삭제</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<h3>전체 상품 목록</h3>
+<ul>
+  {% for product in products %}
+    <li>
+      {{ product.title }} - {{ product.price }}원 |
+      <a href="{{ url_for('delete_product', product_id=product.id) }}">삭제</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<h3>관리자 로그</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>시간</th>
+      <th>관리자</th>
+      <th>활동 내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.timestamp }}</td>
+      <td>{{ log.admin_name }}</td>
+      <td>{{ log.action }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
