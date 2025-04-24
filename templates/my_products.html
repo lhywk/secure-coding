@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 상품 목록</title>
+</head>
+<body>
+    <h1>내 상품 목록</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: green;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>
+                    {{ product.title }} - {{ product.price }}원
+                    | <a href="{{ url_for('edit_product', product_id=product.id) }}">수정</a>
+                    | <a href="{{ url_for('delete_product', product_id=product.id) }}">삭제</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>등록된 상품이 없습니다.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('dashboard') }}">← 대시보드로 돌아가기</a></p>
+</body>
+</html>
