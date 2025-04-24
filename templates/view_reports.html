@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>신고 내역</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: orange;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h2>전체 신고 내역</h2>
+    {% if reports %}
+        <ul>
+        {% for report in reports %}
+            <li>
+                <strong>{{ report.reporter_name or 'guest' }}</strong> →
+                <strong>{{ report.target_name or report.target_id }}</strong> :
+                "{{ report.reason }}"
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>아직 신고 내역이 없습니다.</p>
+    {% endif %}
+</body>
+</html>
