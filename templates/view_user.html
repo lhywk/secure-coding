@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}님의 프로필</title>
+</head>
+<body>
+    <h1>{{ user.username }}님의 프로필</h1>
+
+    <p><strong>소개글:</strong></p>
+    <p>{{ user.bio or "소개글이 없습니다." }}</p>
+
+    <a href="{{ url_for('dashboard') }}">← 대시보드로 돌아가기</a>
+    <a href="{{ url_for('chat', receiver_id=user.id) }}">💬 채팅하기</a>
+    <p><a href="{{ url_for('report', target_id=user.id) }}">신고하기</a></p>
+</body>
+</html>
