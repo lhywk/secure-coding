@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}포인트 송금{% endblock %}
+{% block content %}
+<h2>포인트 송금</h2>
+
+<form method="POST" action="{{ url_for('transfer') }}">
+    <label for="receiver_username">받는 사람 아이디:</label><br>
+    <input type="text" name="receiver_username" required><br><br>
+
+    <label for="amount">송금할 금액:</label><br>
+    <input type="number" name="amount" min="1" required><br><br>
+
+    <button type="submit">송금하기</button>
+</form>
+
+<p><a href="{{ url_for('dashboard') }}">← 대시보드로 돌아가기</a></p>
+{% endblock %}
